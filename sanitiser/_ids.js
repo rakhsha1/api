@@ -45,11 +45,10 @@ function sanitizeId(rawId, messages) {
     return;
   }
 
-  var types = type_mapping.source_and_layer_to_type(source, layer);
-
   return {
+    source: source,
+    layer: layer,
     id: id,
-    types: types
   };
 }
 
