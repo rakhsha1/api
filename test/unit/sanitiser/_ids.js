@@ -2,10 +2,6 @@ var sanitize = require('../../../sanitiser/_ids');
 
 var delimiter = ':';
 var type_mapping = require('../../../helper/type_mapping');
-var inputs = {
-  valid: [ 'geoname:1', 'osmnode:2', 'admin0:53', 'osmway:44', 'geoname:5' ],
-  invalid: [ ':', '', '::', 'geoname:', ':234', 'gibberish:23' ]
-};
 
 var formatError = function(input) {
   return 'id `' + input + ' is invalid: must be of the format source:layer:id for ex: \'geonames:venue:4163334\'';
@@ -112,10 +108,10 @@ module.exports.tests.valid_ids = function(test, common) {
   });
 
   test('ids: valid input (osm)', function(t) {
-    var raw = { ids: 'osm:venue:node:500' };
+    var raw = { ids: 'openstreetmap:venue:node:500' };
     var clean = {};
     var expected_ids = [{
-      source: 'osm',
+      source: 'openstreetmap',
       layer: 'venue',
       id: 'node:500',
     }];
@@ -130,7 +126,7 @@ module.exports.tests.valid_ids = function(test, common) {
 
 module.exports.tests.multiple_ids = function(test, common) {
   test('multiple ids', function(t) {
-    var raw = { ids: 'geonames:venue:1,osm:address:way:2' };
+    var raw = { ids: 'geonames:venue:1,openstreetmap:address:way:2' };
     var clean = {};
 
     var messages = sanitize( raw, clean);
@@ -140,7 +136,7 @@ module.exports.tests.multiple_ids = function(test, common) {
       layer: 'venue',
       id: '1'
     }, {
-      source: 'osm',
+      source: 'openstreetmap',
       layer: 'address',
       id: 'way:2'
     } ];
@@ -154,7 +150,7 @@ module.exports.tests.multiple_ids = function(test, common) {
 
 module.exports.tests.de_dupe = function(test, common) {
   test('duplicate ids', function(t) {
-    var raw = { ids: 'geonames:venue:1,osm:venue:node:2,geonames:venue:1' };
+    var raw = { ids: 'geonames:venue:1,openstreetmap:venue:node:2,geonames:venue:1' };
     var clean = {};
 
     var messages = sanitize( raw, clean );
@@ -164,7 +160,7 @@ module.exports.tests.de_dupe = function(test, common) {
       layer: 'venue',
       id: '1'
     }, {
-      source: 'osm',
+      source: 'openstreetmap',
       layer: 'venue',
       id: 'node:2'
     } ];
