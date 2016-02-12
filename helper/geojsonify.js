@@ -20,7 +20,8 @@ var DETAILS_PROPS = [
   'locality',
   'neighbourhood',
   'confidence',
-  'distance'
+  'distance',
+  'category'
 ];
 
 
